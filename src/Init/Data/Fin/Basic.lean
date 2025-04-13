@@ -24,7 +24,7 @@ def elim0.{u} {α : Sort u} : Fin 0 → α
   | ⟨_, h⟩ => absurd h (not_lt_zero _)
 
 /--
-The successor, with an increased bound.
+The successor of `i : Fin n` as a term in `Fin (n+1)`.
 
 This differs from adding `1`, which instead wraps around.
 
@@ -277,7 +277,7 @@ example (i : Fin 10) : Fin 12 :=
 @[inline] def castLT (i : Fin m) (h : i.1 < n) : Fin n := ⟨i.1, h⟩
 
 /--
-Coarsens a bound to one at least as large.
+Convert `i : Fin n` into `Fin m` given that `n ≤ m`.
 
 See also `Fin.castAdd` for a version that represents the larger bound with addition rather than an
 explicit inequality proof.
@@ -285,14 +285,14 @@ explicit inequality proof.
 @[inline] def castLE (h : n ≤ m) (i : Fin n) : Fin m := ⟨i, Nat.lt_of_lt_of_le i.2 h⟩
 
 /--
-Uses a proof that two bounds are equal to allow a value bounded by one to be used with the other.
+Convert `i : Fin n` into `Fin m` given that `n = m`.
 
 In other words, when `eq : n = m`, `Fin.cast eq i` converts `i : Fin n` into a `Fin m`.
 -/
 @[inline] protected def cast (eq : n = m) (i : Fin n) : Fin m := ⟨i, eq ▸ i.2⟩
 
 /--
-Coarsens a bound to one at least as large.
+Convert `i : Fin n` to `Fin (n + m)`.
 
 See also `Fin.natAdd` and `Fin.addNat` for addition functions that increase the bound, and
 `Fin.castLE` for a version that uses an explicit inequality proof.
@@ -301,12 +301,12 @@ See also `Fin.natAdd` and `Fin.addNat` for addition functions that increase the 
   castLE <| Nat.le_add_right n m
 
 /--
-Coarsens a bound by one.
+Convert `i : Fin n` to `Fin (n+1)`.
 -/
 @[inline] def castSucc : Fin n → Fin (n + 1) := castAdd 1
 
 /--
-Adds a natural number to a `Fin`, increasing the bound.
+Convert `i : Fin n` to `i + m` as a term in `Fin (n+m)`.
 
 This is a generalization of `Fin.succ`.
 
@@ -321,7 +321,7 @@ Examples:
 def addNat (i : Fin n) (m) : Fin (n + m) := ⟨i + m, Nat.add_lt_add_right i.2 _⟩
 
 /--
-Adds a natural number to a `Fin`, increasing the bound.
+Convert `i : Fin n` to `n + i` as a term in `Fin (n+m)`.
 
 This is a generalization of `Fin.succ`.
 
